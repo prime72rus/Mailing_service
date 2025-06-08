@@ -1,5 +1,5 @@
 from django.db import models
-# from users.models import User
+from users.models import User
 
 
 class Recipient(models.Model):
@@ -94,6 +94,7 @@ class Message(models.Model):
         return self.subject
 
     class Meta:
+
         verbose_name = "Сообщение"
         verbose_name_plural = "Сообщения"
 
@@ -125,3 +126,8 @@ class Log(models.Model):
 
     def __str__(self):
         return f"{self.id} - {self.status}"
+
+    class Meta:
+
+        verbose_name = "Лог"
+        verbose_name_plural = "Логи"
