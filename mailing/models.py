@@ -1,4 +1,5 @@
 from django.db import models
+
 from users.models import User
 
 
@@ -8,7 +9,7 @@ class Recipient(models.Model):
     full_name = models.CharField(max_length=100, verbose_name="ФИО клиента")
     comment = models.TextField(blank=True, verbose_name="Комментарий")
     owner = models.ForeignKey(
-        "User",
+        "users.User",
         on_delete=models.CASCADE,
         related_name="recipients",
         verbose_name="Владелец записи получатель",
@@ -61,7 +62,7 @@ class Mailing(models.Model):
         "Recipient", related_name="mailings", verbose_name="Получатели"
     )
     owner = models.ForeignKey(
-        "User",
+        "users.User",
         on_delete=models.CASCADE,
         related_name="mailings",
         verbose_name="Владелец рассылки",
@@ -84,7 +85,7 @@ class Message(models.Model):
     subject = models.CharField(max_length=200, verbose_name="Тема")
     content = models.TextField(verbose_name="Сообщение")
     owner = models.ForeignKey(
-        "User",
+        "users.User",
         on_delete=models.CASCADE,
         related_name="messages",
         verbose_name="Владелец сообщения",
@@ -118,7 +119,7 @@ class Log(models.Model):
         verbose_name="Рассылка",
     )
     owner = models.ForeignKey(
-        "User",
+        "users.User",
         on_delete=models.CASCADE,
         related_name="logs",
         verbose_name="Владелец записи лога попытки",
