@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block title %}Главная{% endblock %}
+{% block content_1 %}
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+	<h1 class="display-4">Сервис рассылок</h1>
+	<p class="lead">Доставим Ваши сообщения по нужным адресам</p>
+</div>
+{% endblock %}
+
+{% block content_2 %}
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 text-center">
+	<div class="col">
+		<div class="card mb-4 box-shadow">
+			<div class="card-header">
+				<h4 class="card-title pricing-card-title">Количество рассылок:</h4>
+			</div>
+			<div class="card-body">
+				{% if user.is_authenticated and not perms.mailing.can_disable_mailing %}
+				<h1 class="card-title pricing-card-title">{{ user_mailings }}</h1>
+				{% else %}
+				<h1 class="card-title pricing-card-title">{{ all_mailings }}</h1>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+	<div class="col">
+		<div class="card mb-4 box-shadow">
+			<div class="card-header">
+				<h4 class="card-title pricing-card-title">Запущено рассылок:</h4>
+			</div>
+			<div class="card-body">
+				{% if user.is_authenticated and not perms.mailing.can_disable_mailing %}
+				<h1 class="card-title pricing-card-title">{{ user_active_mailings }}</h1>
+				{% else %}
+				<h1 class="card-title pricing-card-title">{{ active_mailings }}</h1>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+	<div class="col">
+		<div class="card mb-4 box-shadow">
+			<div class="card-header">
+				<h4 class="card-title pricing-card-title">Количество получателей:</h4>
+			</div>
+			<div class="card-body">
+				{% if user.is_authenticated and not perms.mailing.can_disable_mailing %}
+				<h1 class="card-title pricing-card-title">{{ user_recipients }}</h1>
+				{% else %}
+				<h1 class="card-title pricing-card-title">{{ unique_recipients }}</h1>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+</div>
+<div class="container text-center">
+	{% if user.is_authenticated %}
+	{% if perms.mailing.add_mailing and perms.mailing.add_recipient and perms.mailing.add_message %}
+	<a href="{% url 'mailing:mailing_create' %}" class="btn btn-outline-primary">Добавить рассылку</a>
+	<a href="{% url 'mailing:recipient_create' %}" class="btn btn-outline-primary">Добавить получателя</a>
+	<a href="{% url 'mailing:message_create' %}" class="btn btn-outline-primary">Добавить сообщение</a>
+	{% endif %}
+	{% endif %}
+</div>
+{% endblock %}

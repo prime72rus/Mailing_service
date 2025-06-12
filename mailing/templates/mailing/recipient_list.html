@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}Список получателей{% endblock %}
+{% block content_1 %}
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+	<h1 class="display-4">Список получателей</h1>
+</div>
+{% endblock %}
+
+{% block content_2 %}
+<table class="table">
+	<thead>
+	<tr class="table-primary">
+		<th scope="col">#</th>
+		<th scope="col">ФИО</th>
+		<th scope="col">Email</th>
+		<th scope="col">Просмотр</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	{% for recipient in recipients %}
+	<tr>
+		<th scope="row">{{ forloop.counter }}</th>
+		<td>{{ recipient.full_name }}</td>
+		<td>{{ recipient.email }}</td>
+		<td><a href="{% url 'mailing:recipient_detail' recipient.pk %}"
+		       class="btn btn-outline-primary">&raquo;&raquo;</a></td>
+	</tr>
+	{% endfor %}
+	</tbody>
+</table>
+
+<div class="container text-center">
+	<a href="{% url 'mailing:index' %}" class="btn btn-outline-primary">На главную</a>
+	{% if user.is_authenticated %}
+	{% if perms.mailing.add_mailing and perms.mailing.add_recipient and perms.mailing.add_message %}
+	<a href="{% url 'mailing:mailing_create' %}" class="btn btn-outline-primary">Добавить рассылку</a>
+	<a href="{% url 'mailing:recipient_create' %}" class="btn btn-outline-primary">Добавить получателя</a>
+	<a href="{% url 'mailing:message_create' %}" class="btn btn-outline-primary">Добавить сообщение</a>
+	{% endif %}
+	{% endif %}
+</div>
+{% endblock %}

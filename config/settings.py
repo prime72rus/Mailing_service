@@ -60,7 +60,7 @@ ROOT_URLCONF = "config.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -149,8 +149,8 @@ DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL")
 MANAGER_EMAIL = os.getenv("MANAGER_EMAIL")
 SERVER_EMAIL = EMAIL_HOST_USER
 
-# LOGIN_REDIRECT_URL = "mailing:index"
-# LOGIN_URL = "users:login"
+LOGIN_REDIRECT_URL = "mailing:index"
+LOGIN_URL = "users:login"
 
 CACHE_ENABLED = True
 

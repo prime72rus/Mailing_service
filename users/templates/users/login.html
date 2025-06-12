@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Авторизация{% endblock %}
+{% block content_1 %}
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <h1 class="display-4">Авторизация</h1>
+    <p class="lead">Для использования сервиса рассылок авторизуйтесь</p>
+</div>
+{% endblock %}
+{% block content_2 %}
+<div class="container">
+	<div class="row justify-content-center">
+		<div class="col-md-5">
+			<div class="card shadow-sm">
+				<div class="card-header">
+					<h2 class="h4 mb-0">Данные для авторизации</h2>
+				</div>
+				<div class="card-body">
+					<form method="post" enctype="multipart/form-data" novalidate>
+						{% csrf_token %}
+						{{ form.non_field_errors}}
+						{{ form.as_p }}
+						<div>
+							<button type="submit" class="btn btn-outline-primary me-2">Войти</button>
+							<a href="{% url 'mailing:index' %}" class="btn btn-outline-primary me-2">Отмена</a>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

@@ -16,6 +16,9 @@ class User(AbstractUser):
 
         verbose_name = "Пользователь"
         verbose_name_plural = "Пользователи"
+        permissions = [
+            ("can_blocked_user", "Can blocked user"),
+        ]
 
     def __str__(self):
         return self.email
