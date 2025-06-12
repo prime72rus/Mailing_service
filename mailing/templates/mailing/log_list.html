@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
-{% block title %}Список рассылок{% endblock %}
+{% block title %}Логи{% endblock %}
 {% block content_1 %}
 <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-	<h1 class="display-4">Список рассылок</h1>
+	<h1 class="display-4">Логи</h1>
 </div>
 {% endblock %}
 
@@ -11,12 +11,10 @@
 	<thead>
 	<tr class="table-primary">
 		<th scope="col">#</th>
-		<th scope="col">Тема</th>
+		<th scope="col">Дата и время</th>
 		<th scope="col">Статус</th>
-		<th scope="col">Периодичность</th>
-		<th scope="col">Начало</th>
-		<th scope="col">Окончание</th>
-		<th scope="col">Просмотр</th>
+		<th scope="col">Ответ сервера</th>
+		<th scope="col">Рассылка</th>
 		{% if user.is_authenticated %}
 		{% if perms.mailing.can_disable_mailing and perms.users.can_blocked_user %}
 		<th scope="col">Владелец</th>
@@ -24,25 +22,25 @@
 		{% endif %}
 	</tr>
 	</thead>
+	
 	<tbody>
-	{% for mailing in mailings %}
+	{% for log in logs %}
 	<tr>
 		<th scope="row">{{ forloop.counter }}</th>
-		<td>{{ mailing.message.subject|truncatechars:15 }}</td>
-		<td>{{ mailing.get_status_display }}</td>
-		<td>{{ mailing.get_period_display }}</td>
-		<td>с</td>
-		<td>{{ mailing.datetime_end|date:"d-m-Y H:i" }}</td>
-		<td><a href="{% url 'mailing:mailing_detail' mailing.pk %}" class="btn btn-outline-primary">&raquo;&raquo;</a></td>
+		<td>{{ log.datetime_log|date:"d-m-Y H:i" }}</td>
+		<td>{{ log.get_status_display }}</td>
+		<td>{{ log.server_response }}</td>
+		<td>{{ log.mailing.message.subject|truncatechars:15 }}</td>
 		{% if user.is_authenticated %}
 		{% if perms.mailing.can_disable_mailing and perms.users.can_blocked_user %}
-		<td>{{ mailing.owner.email }}</td>
+		<td>{{ log.owner.email }}</td>
 		{% endif %}
 		{% endif %}
 	</tr>
 	{% endfor %}
 	</tbody>
 </table>
+
 <div class="container text-center">
 	<a href="{% url 'mailing:index' %}" class="btn btn-outline-primary">На главную</a>
 	{% if user.is_authenticated %}

@@ -201,5 +201,14 @@ class MessageDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView)
     success_url = reverse_lazy("mailing:message_list")
 
 
-class LogListView(LoginRequiredMixin, ListView):
-    pass
+class LogListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
+    model = Log
+    permission_required = "mailing.view_log"
+    template_name = "mailing/log_list.html"
+    context_object_name = "logs"
+
+    def get_queryset(self):
+        if self.request.user.groups.filter(
+                name='Managers').exists() or self.request.user.is_superuser:
+            return Log.objects.all()
+        return Log.objects.filter(owner=self.request.user)
