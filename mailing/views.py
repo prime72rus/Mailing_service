@@ -6,7 +6,7 @@ from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.core.mail import send_mail
-from mailing.forms import MailingForm
+from mailing.forms import MailingForm, RecipientForm
 
 
 def index_view(request):
@@ -120,16 +120,39 @@ class RecipientDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailVie
     context_object_name = "recipient"
 
 
-class RecipientCreateView(LoginRequiredMixin, CreateView):
-    pass
+class RecipientCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+    model = Recipient
+    permission_required = "mailing.add_recipient"
+    form_class = RecipientForm
+    template_name = "mailing/recipient_create.html"
+
+    def get_success_url(self):
+        return reverse("mailing:recipient_detail", kwargs={'pk': self.object.pk})
+
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        return super().form_valid(form)
 
 
 class RecipientUpdateView(LoginRequiredMixin, UpdateView):
-    pass
+    model = Recipient
+    permission_required = "mailing.change_recipient"
+    form_class = RecipientForm
+    template_name = "mailing/recipient_update.html"
+
+    def get_success_url(self):
+        return reverse("mailing:recipient_detail", kwargs={'pk': self.object.pk})
+
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        return super().form_valid(form)
 
 
 class RecipientDeleteView(LoginRequiredMixin, DeleteView):
-    pass
+    model = Recipient
+    template_name = "mailing/recipient_delete.html"
+    permission_required = "mailing.delete_recipient"
+    success_url = reverse_lazy("mailing:recipient_list")
 
 
 class MessageListView(LoginRequiredMixin, ListView):

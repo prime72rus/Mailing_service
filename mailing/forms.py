@@ -37,3 +37,25 @@ class MailingForm(forms.ModelForm):
             else:
                 self.fields["recipients"].queryset = Recipient.objects.filter(owner=self.user)
                 self.fields["message"].queryset = Message.objects.filter(owner=self.user)
+
+
+class RecipientForm(forms.ModelForm):
+
+    class Meta:
+
+        model = Recipient
+        exclude = ["owner"]
+
+    def __init__(self, *args, **kwargs):
+        super(RecipientForm, self).__init__(*args, **kwargs)
+        self.fields["email"].widget.attrs.update({
+            "class": "form-control",
+        })
+        self.fields["full_name"].widget.attrs.update({
+            "class": "form-control",
+        })
+
+        self.fields["comment"].widget.attrs.update({
+            "class": "form-control",
+            "rows": 3,
+        })
