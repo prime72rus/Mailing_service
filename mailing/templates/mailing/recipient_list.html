@@ -14,6 +14,11 @@
 		<th scope="col">ФИО</th>
 		<th scope="col">Email</th>
 		<th scope="col">Просмотр</th>
+		{% if user.is_authenticated %}
+		{% if perms.mailing.can_disable_mailing and perms.users.can_blocked_user %}
+		<th scope="col">Владелец</th>
+		{% endif %}
+		{% endif %}
 	</tr>
 	</thead>
 	
@@ -25,6 +30,11 @@
 		<td>{{ recipient.email }}</td>
 		<td><a href="{% url 'mailing:recipient_detail' recipient.pk %}"
 		       class="btn btn-outline-primary">&raquo;&raquo;</a></td>
+		{% if user.is_authenticated %}
+		{% if perms.mailing.can_disable_mailing and perms.users.can_blocked_user %}
+		<td>{{ recipient.owner.email }}</td>
+		{% endif %}
+		{% endif %}
 	</tr>
 	{% endfor %}
 	</tbody>

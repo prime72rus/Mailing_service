@@ -1,6 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-
+from django.contrib.auth.models import Group
 
 class User(AbstractUser):
     username = None
@@ -22,3 +22,11 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.email
+
+    def save(self, *args, **kwargs):
+        created = not self.pk
+        super().save(*args, **kwargs)
+
+        if created:
+            group = Group.objects.get(name='Users')
+            self.groups.add(group)

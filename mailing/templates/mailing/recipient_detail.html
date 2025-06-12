@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
-{% block title %}Список рассылок{% endblock %}
+{% block title %}Просмотр получателя{% endblock %}
 {% block content_1 %}
 <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-	<h1 class="display-4">Просмотр рассылки</h1>
+	<h1 class="display-4">Просмотр получателя</h1>
 </div>
 {% endblock %}
 
@@ -30,7 +30,7 @@
 </div>
 <div class="container text-center mt-3">
 	{% if user.is_authenticated %}
-	{% if perms.mailing.change_mailing and perms.mailing.delete_mailing %}
+	{% if perms.mailing.change_recipient and perms.mailing.delete_recipient %}
 	<a href="{% url 'mailing:recipient_update' recipient.pk %}" class="btn btn-outline-primary">Редактировать</a>
 	<a href="{% url 'mailing:recipient_delete' recipient.pk %}" class="btn btn-outline-danger">Удалить</a>
 	{% endif %}

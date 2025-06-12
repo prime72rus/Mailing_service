@@ -59,3 +59,21 @@ class RecipientForm(forms.ModelForm):
             "class": "form-control",
             "rows": 3,
         })
+
+
+class MessageForm(forms.ModelForm):
+
+    class Meta:
+
+        model = Message
+        exclude = ["owner"]
+
+    def __init__(self, *args, **kwargs):
+        super(MessageForm, self).__init__(*args, **kwargs)
+        self.fields["subject"].widget.attrs.update({
+            "class": "form-control",
+        })
+        self.fields["content"].widget.attrs.update({
+            "class": "form-control",
+            "rows": 3,
+        })
