@@ -38,6 +38,14 @@
 						<td>Получатели</td>
 						<td>{{ mailing.recipients.all|join:", " }}</td>
 					</tr>
+					<tr>
+						<td>Сообщений доставлено</td>
+						<td>{{ success_count }} из {{ logs_count }}</td>
+					</tr>
+					<tr>
+						<td>Сообщений не доставлено</td>
+						<td>{{ not_success_count }}</td>
+					</tr>
 					</tbody>
 				</table>
 			</div>
@@ -48,7 +56,8 @@
 
 <div class="container text-center mt-3">
 	{% if user.is_authenticated %}
-	{% if perms.mailing.change_mailing and perms.mailing.delete_mailing %}
+	{% if perms.mailing.change_mailing and perms.mailing.delete_mailing and perms.mailing.view_mailing %}
+	<a href="{% url 'mailing:mailing_send' mailing.pk %}" class="btn btn-outline-primary">Отправить сейчас</a>
 	<a href="{% url 'mailing:mailing_update' mailing.pk %}" class="btn btn-outline-primary">Редактировать</a>
 	<a href="{% url 'mailing:mailing_delete' mailing.pk %}" class="btn btn-outline-danger">Удалить</a>
 	{% endif %}

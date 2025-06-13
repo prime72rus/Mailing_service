@@ -31,7 +31,7 @@
 		<td>{{ mailing.message.subject|truncatechars:15 }}</td>
 		<td>{{ mailing.get_status_display }}</td>
 		<td>{{ mailing.get_period_display }}</td>
-		<td>с</td>
+		<td>{{ mailing.datetime_start|date:"d-m-Y H:i" }}</td>
 		<td>{{ mailing.datetime_end|date:"d-m-Y H:i" }}</td>
 		<td><a href="{% url 'mailing:mailing_detail' mailing.pk %}" class="btn btn-outline-primary">&raquo;&raquo;</a></td>
 		{% if user.is_authenticated %}
