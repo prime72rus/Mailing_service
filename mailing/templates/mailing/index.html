@@ -51,6 +51,48 @@
 			</div>
 		</div>
 	</div>
+	<div class="col">
+		<div class="card mb-4 box-shadow">
+			<div class="card-header">
+				<h4 class="card-title pricing-card-title">Попытки рассылок:</h4>
+			</div>
+			<div class="card-body">
+				{% if user.is_authenticated and not perms.mailing.can_disable_mailing %}
+				<h1 class="card-title pricing-card-title">{{ user_logs }}</h1>
+				{% else %}
+				<h1 class="card-title pricing-card-title">{{ all_logs }}</h1>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+	<div class="col">
+		<div class="card mb-4 box-shadow">
+			<div class="card-header">
+				<h4 class="card-title pricing-card-title">Удачные попытки:</h4>
+			</div>
+			<div class="card-body">
+				{% if user.is_authenticated and not perms.mailing.can_disable_mailing %}
+				<h1 class="card-title pricing-card-title">{{ user_saccess_logs }}</h1>
+				{% else %}
+				<h1 class="card-title pricing-card-title">{{ saccess_logs }}</h1>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+	<div class="col">
+		<div class="card mb-4 box-shadow">
+			<div class="card-header">
+				<h4 class="card-title pricing-card-title">Неудачные попытки:</h4>
+			</div>
+			<div class="card-body">
+				{% if user.is_authenticated and not perms.mailing.can_disable_mailing %}
+				<h1 class="card-title pricing-card-title">{{ user_failure_logs }}</h1>
+				{% else %}
+				<h1 class="card-title pricing-card-title">{{ failure_logs }}</h1>
+				{% endif %}
+			</div>
+		</div>
+	</div>
 </div>
 <div class="container text-center">
 	{% if user.is_authenticated %}

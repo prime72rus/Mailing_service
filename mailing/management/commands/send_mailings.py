@@ -46,4 +46,7 @@ class Command(BaseCommand):
                     owner=mailing.owner
                 )
 
+            mailing.status = "launched"
+            mailing.save()
+
         self.stdout.write(self.style.SUCCESS("Отправка сообщений завершена!"))

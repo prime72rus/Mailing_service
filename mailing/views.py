@@ -19,12 +19,21 @@ def index_view(request):
     active_mailings = all_mailings.filter(status="launched")
     unique_recipients = Recipient.objects.values("email").distinct()
 
+    all_logs = Log.objects.all()
+    saccess_logs = all_logs.filter(status="successfully")
+    failure_logs = all_logs.filter(status="failure")
+
     if user.is_authenticated:
         user_mailings = all_mailings.filter(owner=user).count()
         user_active_mailings = active_mailings.filter(owner=user).count()
         user_recipients = Recipient.objects.filter(owner=user).count()
+
+        user_logs = all_logs.filter(owner=user).count
+        user_saccess_logs = saccess_logs.filter(owner=user).count()
+        user_failure_logs = failure_logs.filter(owner=user).count()
+
     else:
-        user_mailings = user_active_mailings = user_recipients = 0
+        user_mailings = user_active_mailings = user_recipients = user_logs = user_saccess_logs = user_failure_logs = 0
 
     context = {
         "all_mailings": all_mailings.count(),
@@ -33,6 +42,13 @@ def index_view(request):
         "user_mailings": user_mailings,
         "user_active_mailings": user_active_mailings,
         "user_recipients": user_recipients,
+
+        "all_logs": all_logs.count(),
+        "saccess_logs": saccess_logs.count(),
+        "failure_logs": failure_logs.count(),
+        "user_logs": user_logs,
+        "user_saccess_logs": user_saccess_logs,
+        "user_failure_logs": user_failure_logs,
     }
 
     return render(request, "mailing/index.html", context)
@@ -65,7 +81,11 @@ class MailingDetailView(LoginRequiredMixin, PermissionRequiredMixin,
         logs = mailing.logs.all()
         context["success_count"] = logs.filter(status="successfully").count()
         context["not_success_count"] = logs.filter(status="failure").count()
-        context["logs_count"] = logs.filter(owner=self.request.user).count()
+        if self.request.user.groups.filter(
+                name='Managers').exists() or self.request.user.is_superuser:
+            context["logs_count"] = logs.count()
+        else:
+            context["logs_count"] = logs.filter(owner=self.request.user).count()
 
         return context
 
@@ -90,7 +110,6 @@ class MailingCreateView(LoginRequiredMixin, PermissionRequiredMixin,
 
     def form_valid(self, form):
         form.instance.owner = self.request.user
-        form.instance.status = "Создана"
         return super().form_valid(form)
 
 
@@ -153,6 +172,9 @@ def send_mailing_view(request, pk):
             mailing=mailing,
             owner=request.user
         )
+
+        mailing.status = "launched"
+        mailing.save()
 
     return redirect('mailing:mailing_detail', pk=mailing.pk)
 
