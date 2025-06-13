@@ -62,6 +62,7 @@
 	<a href="{% url 'mailing:mailing_delete' mailing.pk %}" class="btn btn-outline-danger">Удалить</a>
 	{% endif %}
 	{% endif %}
+	<a href="{% url 'mailing:mailing_complete' mailing.pk %}" class="btn btn-outline-primary">Отключить рассылку</a>
 	<a href="{% url 'mailing:mailing_list' %}" class="btn btn-outline-primary">К списку рассылок</a>
 </div>
 {% endblock %}

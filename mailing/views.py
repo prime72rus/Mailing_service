@@ -10,6 +10,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, \
 from django.core.mail import send_mail
 from mailing.forms import MailingForm, RecipientForm, MessageForm
 from django.conf import settings
+from django.http import HttpResponseForbidden
 
 
 def index_view(request):
@@ -175,6 +176,19 @@ def send_mailing_view(request, pk):
 
         mailing.status = "launched"
         mailing.save()
+
+    return redirect('mailing:mailing_detail', pk=mailing.pk)
+
+
+@login_required
+def complete_mailing_view(request, pk):
+    mailing = get_object_or_404(Mailing, pk=pk)
+    if not request.user.is_superuser and mailing.owner != request.user and not request.user.groups.filter(
+                name='Managers').exists():
+        return HttpResponseForbidden("У вас нет доступа для отключения рассылки")
+
+    mailing.status = "completed"
+    mailing.save()
 
     return redirect('mailing:mailing_detail', pk=mailing.pk)
 
