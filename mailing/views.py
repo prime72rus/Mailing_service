@@ -11,8 +11,10 @@ from django.core.mail import send_mail
 from mailing.forms import MailingForm, RecipientForm, MessageForm
 from django.conf import settings
 from django.http import HttpResponseForbidden
+from django.views.decorators.cache import cache_page
 
 
+@cache_page(60 * 15)
 def index_view(request):
     user = request.user
 
