@@ -12,7 +12,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         try:
             user = User.objects.create(
-                email="admin@example.com",
+                email=os.getenv("SUPERUSER_EMAIL"),
             )
 
             user.set_password(os.getenv("PASSWORD"))
