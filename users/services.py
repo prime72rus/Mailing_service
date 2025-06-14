@@ -1,9 +1,11 @@
 import secrets
-from django.core.mail import send_mail
+
 from django.conf import settings
+from django.core.mail import send_mail
+from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
-from django.http import HttpResponseRedirect
+
 from users.models import User
 
 
@@ -19,8 +21,10 @@ def send_verification_email(user, request):
     verification_url = f"http://{host}/email-confirm/{token}/"
 
     subject = "Добро пожаловать в наш сервис"
-    message = (f"Спасибо, что зарегистрировались! Для подтверждения почты "
-               f"перейдите по ссылке: {verification_url}")
+    message = (
+        f"Спасибо, что зарегистрировались! Для подтверждения почты "
+        f"перейдите по ссылке: {verification_url}"
+    )
 
     send_mail(
         subject=subject,

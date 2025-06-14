@@ -1,18 +1,19 @@
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    UserPassesTestMixin,
+)
+from django.core.exceptions import PermissionDenied
 from django.urls import reverse_lazy
 from django.views.generic import ListView
 from django.views.generic.edit import FormView, UpdateView
+
 from users.forms import (
-    UserRegisterForm,
-    UserProfileUpdateForm,
     UserManagerForm,
+    UserProfileUpdateForm,
+    UserRegisterForm,
 )
 from users.models import User
-from django.contrib.auth.mixins import (
-    LoginRequiredMixin,
-    UserPassesTestMixin,
-    PermissionRequiredMixin,
-)
-from django.core.exceptions import PermissionDenied
 from users.services import send_verification_email, verify_user_email
 
 

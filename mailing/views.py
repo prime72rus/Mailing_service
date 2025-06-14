@@ -1,17 +1,18 @@
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, reverse, get_object_or_404, redirect
-from django.urls import reverse_lazy
-from mailing.models import Recipient, Mailing, Message, Log
-from django.views.generic import ListView, DetailView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import (
     LoginRequiredMixin,
     PermissionRequiredMixin,
 )
 from django.core.mail import send_mail
-from mailing.forms import MailingForm, RecipientForm, MessageForm
-from django.conf import settings
 from django.http import HttpResponseForbidden
+from django.shortcuts import get_object_or_404, redirect, render, reverse
+from django.urls import reverse_lazy
+from django.views.generic import DetailView, ListView
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
+
+from mailing.forms import MailingForm, MessageForm, RecipientForm
+from mailing.models import Log, Mailing, Message, Recipient
 
 
 def index_view(request):

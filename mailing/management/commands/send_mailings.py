@@ -1,7 +1,8 @@
-from django.core.management.base import BaseCommand
 from django.conf import settings
 from django.core.mail import send_mail
-from mailing.models import Mailing, Log
+from django.core.management.base import BaseCommand
+
+from mailing.models import Log, Mailing
 
 
 class Command(BaseCommand):

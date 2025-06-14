@@ -1,24 +1,23 @@
-from django.urls import path
-from django.urls import reverse_lazy
-from django.views.decorators.cache import cache_page
-
-from users.apps import UsersConfig
 from django.contrib.auth.views import (
     LoginView,
     LogoutView,
-    PasswordResetView,
-    PasswordResetDoneView,
-    PasswordResetConfirmView,
     PasswordResetCompleteView,
+    PasswordResetConfirmView,
+    PasswordResetDoneView,
+    PasswordResetView,
 )
-from users.views import (
-    RegisterView,
-    RegisterUpdateView,
-    BlockedUserView,
-    email_verification,
-    UserListView,
-)
+from django.urls import path, reverse_lazy
+from django.views.decorators.cache import cache_page
+
+from users.apps import UsersConfig
 from users.forms import CustomLoginForm
+from users.views import (
+    BlockedUserView,
+    RegisterUpdateView,
+    RegisterView,
+    UserListView,
+    email_verification,
+)
 
 app_name = UsersConfig.name
 

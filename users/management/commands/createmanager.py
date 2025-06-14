@@ -1,11 +1,13 @@
 import secrets
-from django.core.management.base import BaseCommand
+from getpass import getpass
+from itertools import chain
+
 from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
-from getpass import getpass
+from django.core.management.base import BaseCommand
+
+from mailing.models import Log, Mailing, Message, Recipient
 from users.models import User
-from mailing.models import Mailing, Message, Recipient, Log
-from itertools import chain
 
 
 class Command(BaseCommand):
@@ -18,8 +20,11 @@ class Command(BaseCommand):
             email = input("Введите email пользователя: ").strip()
 
         if User.objects.filter(email=email).exists():
-            self.stdout.write(self.style.ERROR("Пользователь с "
-                                               "таким email уже существует!"))
+            self.stdout.write(
+                self.style.ERROR(
+                    "Пользователь с " "таким email уже существует!"
+                )
+            )
             return
 
         password = getpass("Введите пароль: ").strip()
@@ -28,9 +33,7 @@ class Command(BaseCommand):
             password = getpass("Введите пароль: ").strip()
 
         user = User.objects.create(
-            email=email,
-            is_active=True,
-            token=secrets.token_hex(16)
+            email=email, is_active=True, token=secrets.token_hex(16)
         )
 
         user.set_password(password)
@@ -41,37 +44,38 @@ class Command(BaseCommand):
         if created:
             user_perms = Permission.objects.filter(
                 content_type=ContentType.objects.get_for_model(User),
-                codename__in=["view_user", "can_blocked_user"]
+                codename__in=["view_user", "can_blocked_user"],
             )
             mailing_perms = Permission.objects.filter(
                 content_type=ContentType.objects.get_for_model(Mailing),
-                codename__in=["view_mailing", "can_disable_mailing"]
+                codename__in=["view_mailing", "can_disable_mailing"],
             )
             log_perms = Permission.objects.filter(
                 content_type=ContentType.objects.get_for_model(Log),
-                codename__in=['view_log']
+                codename__in=["view_log"],
             )
             recipient_perms = Permission.objects.filter(
                 content_type=ContentType.objects.get_for_model(Recipient),
-                codename__in=["view_recipient"]
+                codename__in=["view_recipient"],
             )
             message_perms = Permission.objects.filter(
                 content_type=ContentType.objects.get_for_model(Message),
-                codename__in=["view_message"]
+                codename__in=["view_message"],
             )
 
-            all_permissions = list(chain(
-                user_perms,
-                mailing_perms,
-                log_perms,
-                recipient_perms,
-                message_perms
-            ))
+            all_permissions = list(
+                chain(
+                    user_perms,
+                    mailing_perms,
+                    log_perms,
+                    recipient_perms,
+                    message_perms,
+                )
+            )
 
             manager_group.permissions.add(*all_permissions)
 
-            self.stdout.write(self.style.SUCCESS(
-                'Создана группа "Managers"'))
+            self.stdout.write(self.style.SUCCESS('Создана группа "Managers"'))
 
         user.groups.add(manager_group)
 
@@ -79,7 +83,5 @@ class Command(BaseCommand):
         user.groups.remove(users_group)
 
         self.stdout.write(
-            self.style.SUCCESS(
-                f"Пользователь {email} создан как менеджер."
-            )
+            self.style.SUCCESS(f"Пользователь {email} создан как менеджер.")
         )
