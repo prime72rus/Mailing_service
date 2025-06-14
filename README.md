@@ -46,7 +46,7 @@
 1. Клонировать репозиторий:
 
 ```bash
-git clone https://github.com/Prime72rus/Mailing_service.git
+git clone https://github.com/prime72rus/Mailing_service.git
 cd Mailing_service
 ```
 
