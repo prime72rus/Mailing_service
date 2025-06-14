@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block title %}Список пользователей{% endblock %}
+{% block content_1 %}
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+	<h1 class="display-4">Список пользователей</h1>
+</div>
+{% endblock %}
+
+{% block content_2 %}
+<table class="table">
+	<thead>
+	<tr class="table-primary">
+		<th scope="col">#</th>
+		<th scope="col">Email</th>
+		<th scope="col">Имя</th>
+		<th scope="col">Фамилия</th>
+		<th scope="col">Active</th>
+		<th scope="col">Action</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	{% for user in users %}
+	<tr>
+		<th scope="row">{{ forloop.counter }}</th>
+		<td>{{ user.email }}</td>
+		<td>{{ user.first_name }}</td>
+		<td>{{ user.last_name }}</td>
+		<td>{{ user.is_active|yesno:"Да,Нет" }}</td>
+		{% if perms.mailing.can_disable_mailing %}
+		<td><a class="p-2 btn btn-outline-danger" href="{% url 'users:blocked_user' user.pk %}">Блокировать</a></td>
+		{% endif %}
+	</tr>
+	{% endfor %}
+	</tbody>
+</table>
+<div class="container text-center">
+	<a href="{% url 'mailing:index' %}" class="btn btn-outline-primary">На главную</a>
+	{% if user.is_authenticated %}
+	{% if perms.mailing.add_mailing and perms.mailing.add_recipient and perms.mailing.add_message %}
+	<a href="{% url 'mailing:mailing_create' %}" class="btn btn-outline-primary">Добавить рассылку</a>
+	<a href="{% url 'mailing:recipient_create' %}" class="btn btn-outline-primary">Добавить получателя</a>
+	<a href="{% url 'mailing:message_create' %}" class="btn btn-outline-primary">Добавить сообщение</a>
+	{% endif %}
+	{% endif %}
+</div>
+{% endblock %}

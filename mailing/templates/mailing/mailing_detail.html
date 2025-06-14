@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block title %}Список рассылок{% endblock %}
+{% block content_1 %}
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+	<h1 class="display-4">Просмотр рассылки</h1>
+</div>
+{% endblock %}
+
+{% block content_2 %}
+<div class="row justify-content-center">
+	<div class="col-md-8">
+		<div class="card shadow-sm">
+			<div class="card-header">
+				<h2 class="h4 mb-0">Тема: {{ mailing.message.subject }}</h2>
+			</div>
+			<div class="card-body">
+				<h5>Сообщение:</h5>
+				<p>{{ mailing.message.content }}</p>
+				<table class="table">
+					<tbody>
+					<tr>
+						<td>Статус</td>
+						<td>{{ mailing.get_status_display }}</td>
+					</tr>
+					<tr>
+						<td>Периодичность</td>
+						<td>{{ mailing.get_period_display }}</td>
+					</tr>
+					<tr>
+						<td>Начало</td>
+						<td>{{ mailing.datetime_start|date:"d-m-Y H:i" }}</td>
+					</tr>
+					<tr>
+						<td>Окончание</td>
+						<td>{{ mailing.datetime_end|date:"d-m-Y H:i" }}</td>
+					</tr>
+					<tr>
+						<td>Получатели</td>
+						<td>{{ mailing.recipients.all|join:", " }}</td>
+					</tr>
+					<tr>
+						<td>Сообщений доставлено</td>
+						<td>{{ success_count }} из {{ logs_count }}</td>
+					</tr>
+					<tr>
+						<td>Сообщений не доставлено</td>
+						<td>{{ not_success_count }}</td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="container text-center mt-3">
+	{% if user.is_authenticated %}
+	{% if perms.mailing.change_mailing and perms.mailing.delete_mailing and perms.mailing.view_mailing %}
+	<a href="{% url 'mailing:mailing_send' mailing.pk %}" class="btn btn-outline-primary">Отправить сейчас</a>
+	<a href="{% url 'mailing:mailing_update' mailing.pk %}" class="btn btn-outline-primary">Редактировать</a>
+	<a href="{% url 'mailing:mailing_delete' mailing.pk %}" class="btn btn-outline-danger">Удалить</a>
+	{% endif %}
+	{% endif %}
+	<a href="{% url 'mailing:mailing_complete' mailing.pk %}" class="btn btn-outline-primary">Отключить рассылку</a>
+	<a href="{% url 'mailing:mailing_list' %}" class="btn btn-outline-primary">К списку рассылок</a>
+</div>
+{% endblock %}

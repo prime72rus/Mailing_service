@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}Удаление получателя{% endblock %}
+{% block content_1 %}
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+	<h1 class="display-4">Удаление получателя</h1>
+	<p class="lead">Подтверждение удаления получателя</p>
+</div>
+{% endblock %}
+
+{% block content_2 %}
+<div class="row justify-content-center">
+		<div class="col-md-8">
+			<div class="card shadow-sm">
+				<div class="card-header">
+					<h2 class="h4 mb-0">Вы действительно хотите удалить получателя?</h2>
+				</div>
+				<div class="card-body">
+					<h3>{{ recipient.email }}</h3>
+					<p>{{ recipient.full_name }}</p>
+					<form method="post">
+						{% csrf_token %}
+						<div>
+							<button type="submit" class="p-2 btn btn-outline-danger">Удалить</button>
+							<a href="{% url 'mailing:recipient_list' %}" class="p-2 btn btn-outline-primary">Отмена</a>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

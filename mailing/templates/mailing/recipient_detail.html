@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}Просмотр получателя{% endblock %}
+{% block content_1 %}
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+	<h1 class="display-4">Просмотр получателя</h1>
+</div>
+{% endblock %}
+
+{% block content_2 %}
+<div class="row justify-content-center">
+	<div class="col-md-8">
+		<div class="card shadow-sm">
+			<div class="card-header">
+				<h2 class="h4 mb-0">{{ recipient.email }}</h2>
+			</div>
+			<div class="card-body">
+				<h5>ФИО:</h5>
+				<p>{{ recipient.full_name }}</p>
+				<table class="table">
+					<tbody>
+					<tr>
+						<td>Комментарий</td>
+						<td>{{ recipient.comment }}</td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="container text-center mt-3">
+	{% if user.is_authenticated %}
+	{% if perms.mailing.change_recipient and perms.mailing.delete_recipient %}
+	<a href="{% url 'mailing:recipient_update' recipient.pk %}" class="btn btn-outline-primary">Редактировать</a>
+	<a href="{% url 'mailing:recipient_delete' recipient.pk %}" class="btn btn-outline-danger">Удалить</a>
+	{% endif %}
+	{% endif %}
+	<a href="{% url 'mailing:recipient_list' %}" class="btn btn-outline-primary">К списку получателей</a>
+</div>
+{% endblock %}

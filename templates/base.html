@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>{% block title %}Сервис рассылок{% endblock %}</title>
+	<link rel="stylesheet" href="/static/css/bootstrap.min.css">
+</head>
+
+<body>
+{% include 'header.html' %}
+{% block content_1 %}
+{% endblock %}
+
+<div class="container">
+	{% block content_2 %}
+	{% endblock %}
+</div>
+
+{% include 'footer.html' %}
+<script src="/static/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
