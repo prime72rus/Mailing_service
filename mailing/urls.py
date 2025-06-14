@@ -88,5 +88,9 @@ urlpatterns = [
     ),
     path("log/list/", LogListView.as_view(), name="logs"),
     path("mailing/<int:pk>/send/", send_mailing_view, name="mailing_send"),
-    path("mailing/<int:pk>/complete/", complete_mailing_view, name="mailing_complete"),
+    path(
+        "mailing/<int:pk>/complete/",
+        complete_mailing_view,
+        name="mailing_complete",
+    ),
 ]

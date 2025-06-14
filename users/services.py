@@ -9,7 +9,7 @@ from users.models import User
 
 def send_verification_email(user, request):
     """
-    Функция генерирует токен и отправляет письмо для подтверждения почты.
+    Функция генерирует токен и отправляет письмо для подтверждения почты
     """
     token = secrets.token_hex(16)
     user.token = token
@@ -18,8 +18,9 @@ def send_verification_email(user, request):
     host = request.get_host()
     verification_url = f"http://{host}/email-confirm/{token}/"
 
-    subject = 'Добро пожаловать в наш сервис'
-    message = f"Спасибо, что зарегистрировались! Для подтверждения почты перейдите по ссылке: {verification_url}"
+    subject = "Добро пожаловать в наш сервис"
+    message = (f"Спасибо, что зарегистрировались! Для подтверждения почты "
+               f"перейдите по ссылке: {verification_url}")
 
     send_mail(
         subject=subject,
@@ -32,7 +33,8 @@ def send_verification_email(user, request):
 
 def verify_user_email(token):
     """
-    Функция активирует пользователя по токену и перенаправляет на страницу входа.
+    Функция активирует пользователя по токену и
+    перенаправляет на страницу входа
     """
     user = get_object_or_404(User, token=token)
     user.is_active = True

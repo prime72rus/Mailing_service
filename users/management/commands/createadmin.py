@@ -25,7 +25,8 @@ class Command(BaseCommand):
 
             self.stdout.write(
                 self.style.SUCCESS(
-                    f"Успешно создан пользователь-администратор с электронной почтой {user.email}!"
+                    f"Успешно создан пользователь-администратор "
+                    f"с электронной почтой {user.email}!"
                 )
             )
         except Exception as e:

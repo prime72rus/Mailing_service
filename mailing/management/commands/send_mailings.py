@@ -4,7 +4,6 @@ from django.core.mail import send_mail
 from mailing.models import Mailing, Log
 
 
-
 class Command(BaseCommand):
     help = 'Отправляет все рассылки со статусом "created" или "launched"'
 
@@ -43,7 +42,7 @@ class Command(BaseCommand):
                     status=status,
                     server_response=server_response,
                     mailing=mailing,
-                    owner=mailing.owner
+                    owner=mailing.owner,
                 )
 
             mailing.status = "launched"

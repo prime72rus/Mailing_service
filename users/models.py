@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.contrib.auth.models import Group
 
+
 class User(AbstractUser):
     username = None
     email = models.EmailField(unique=True, verbose_name="Email")
@@ -28,5 +29,5 @@ class User(AbstractUser):
         super().save(*args, **kwargs)
 
         if created:
-            group = Group.objects.get(name='Users')
+            group = Group.objects.get(name="Users")
             self.groups.add(group)
