@@ -18,7 +18,6 @@ class User(AbstractUser):
         max_length=100, verbose_name="Токен", blank=True, null=True
     )
 
-
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
