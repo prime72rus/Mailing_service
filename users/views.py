@@ -8,7 +8,7 @@ from users.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin, PermissionRequiredMixin
 from django.core.exceptions import PermissionDenied
 from users.services import send_verification_email, verify_user_email
-from django.views.decorators.cache import cache_page
+
 
 class RegisterView(FormView):
 
@@ -65,7 +65,7 @@ class BlockedUserView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
             raise PermissionDenied("У вас нет прав для блокировки пользователей")
         return super().handle_no_permission()
 
-@cache_page(60 * 2)
+
 class UserListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     model = User
     permission_required = "users.can_blocked_user"

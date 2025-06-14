@@ -1,6 +1,6 @@
 from django.urls import path
 from django.urls import reverse_lazy
-# from django.views.decorators.cache import cache_page
+from django.views.decorators.cache import cache_page
 
 from users.apps import UsersConfig
 from django.contrib.auth.views import (
@@ -47,7 +47,7 @@ urlpatterns = [
         BlockedUserView.as_view(),
         name="blocked_user",
     ),
-    path("users_list/", UserListView.as_view(), name="users_list"),
+    path("users_list/", cache_page(60 * 2)(UserListView.as_view()), name="users_list"),
 
 
     path(
